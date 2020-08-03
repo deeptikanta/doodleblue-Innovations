@@ -2,8 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { data } from './dashboard.utils';
-import { fetchUserDetails, updateEmailDetails } from './dashboard.action';
+import { fetchstarredMail,clearStarred } from '../dashboard/dashboard.action';
 import { Grid } from '@material-ui/core';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
@@ -11,19 +10,26 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-class DashBoard extends React.Component {
+class StarredMail extends React.Component {
     constructor(props) {
         super(props);
-        this.getHeaderCotent = this.getHeaderCotent.bind(this);
-        this.addStarToEmail = this.addStarToEmail.bind(this);
     };
 
     componentDidMount() {
-        const { email } = this.props;
+        const { EmailDetails } = this.props;
         window.scrollTo(0, 0);
-        const filterUser = [...data].filter(x => x.Email === email);
-        console.log(filterUser,'filterUserfilterUser')
-        this.props.fetchUserDetails(filterUser[0]);
+        var starred = [];
+        console.log(EmailDetails);
+        EmailDetails && EmailDetails.mails && EmailDetails.mails.map(x => {
+            if (x.stareed) {
+                starred.push(x);
+            }
+        })
+        console.log(starred, 'star')
+        this.props.fetchstarredMail(starred);
+    }
+    componentWillUnmount(){
+        this.props.clearStarred();
     }
 
     getHeaderCotent(mail) {
@@ -43,22 +49,14 @@ class DashBoard extends React.Component {
         )
 
     }
-    addStarToEmail(mail) {
-        const { EmailDetails } = this.props;
-        EmailDetails.mails.map((x) => {
-            if (x.emailid === mail.emailid) {
-                x.stareed = true;
-            }
-        });
-        this.props.updateEmailDetails(EmailDetails);
-    }
+
 
     render() {
-        const { EmailDetails } = this.props;
+        const { starredEmail } = this.props;
         return (
             <Grid container >
                 <Grid item xs={12}>
-                    {EmailDetails.mails && EmailDetails.mails.length > 0 && EmailDetails.mails.map((mail) => {
+                    {starredEmail.length > 0 && starredEmail.map((mail) => {
                         return (
                             <Accordion style={{ width: '100 %' }} expanded={false}>
                                 <AccordionSummary
@@ -85,7 +83,8 @@ class DashBoard extends React.Component {
 const mapStateToProps = ({
     DashBoardReducer
 }) => ({
+    starredEmail: DashBoardReducer.starredEmail,
     EmailDetails: DashBoardReducer.emailDetails,
     email: DashBoardReducer.email,
 });
-export default withRouter(connect(mapStateToProps, { fetchUserDetails, updateEmailDetails })(DashBoard));
+export default withRouter(connect(mapStateToProps, { fetchstarredMail,clearStarred })(StarredMail));
