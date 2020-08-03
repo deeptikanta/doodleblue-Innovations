@@ -63,9 +63,9 @@ class StarredMail extends React.Component {
                                 >
                                     <FormControlLabel
                                         aria-label="Acknowledge"
-                                        onClick={(event) => { event.stopPropagation(); this.addStarToEmail(mail) }}
+                                        onClick={(event) => { event.stopPropagation() }}
                                         onFocus={(event) => event.stopPropagation()}
-                                        control={<Checkbox />}
+                                        control={<Checkbox checked={mail.stareed}/>}
                                         label={''}
                                     />
                                     {this.getHeaderCotent(mail)}

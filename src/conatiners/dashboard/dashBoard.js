@@ -22,7 +22,7 @@ class DashBoard extends React.Component {
         const { email } = this.props;
         window.scrollTo(0, 0);
         const filterUser = [...data].filter(x => x.Email === email);
-        console.log(filterUser,'filterUserfilterUser')
+        console.log(filterUser, 'filterUserfilterUser')
         this.props.fetchUserDetails(filterUser[0]);
     }
 
@@ -47,7 +47,7 @@ class DashBoard extends React.Component {
         const { EmailDetails } = this.props;
         EmailDetails.mails.map((x) => {
             if (x.emailid === mail.emailid) {
-                x.stareed = true;
+                x.stareed = !x.stareed;
             }
         });
         this.props.updateEmailDetails(EmailDetails);
