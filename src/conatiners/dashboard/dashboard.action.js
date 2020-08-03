@@ -16,6 +16,5 @@ export const fetchstarredMail=(response)=>(dispatch)=>{
       dispatch({payload:response,type:'FETCH_STARRED_EMAIL'})
 }
 export const clearStarred=()=>(dispatch)=>{
-      console.log('called')
       dispatch({type:'UN_MOUNT_STARRED_EMAIL'})
 }
